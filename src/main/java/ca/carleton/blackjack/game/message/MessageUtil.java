@@ -35,7 +35,7 @@ public class MessageUtil {
         READY_TO_START("|READY+TO+START|The game is now ready to begin. Press start when ready."),
         OTHER_READY_TO_START("|OTHER+READY+TO+START|The game is now ready to begin. Waiting on admin to start."),
         YOUR_TURN("|YOUR+TURN|It is your turn, please select one of the three available game options."),
-        SKIPPING("|SKIP|Skipping %s's turn because they are : %s."),
+        SKIPPING("|SKIP|."),
         MOVE_MADE("|OTHER+MOVE|%s made their turn and %s."),
         BUST("|BUST|%s won this round and earned 0 points."),
         SEVEN_CARD_CHARLIE("|SEVEN+CHARLIE|You got a seven card charlie and won!"),

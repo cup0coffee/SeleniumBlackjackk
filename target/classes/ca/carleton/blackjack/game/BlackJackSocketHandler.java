@@ -1,9 +1,7 @@
 package ca.carleton.blackjack.game;
 
-import ca.carleton.blackjack.game.entity.AIPlayer;
 import ca.carleton.blackjack.game.entity.Player;
 import ca.carleton.blackjack.game.entity.card.Card;
-import ca.carleton.blackjack.game.message.MessageUtil;
 import ca.carleton.blackjack.session.SessionHandler;
 import org.apache.commons.lang3.NotImplementedException;
 import org.slf4j.Logger;
@@ -195,7 +193,6 @@ public class BlackJackSocketHandler extends TextWebSocketHandler {
                     cardPile.add(tempCard);
                     LOG.info("(TOP PILE) -> most recent card used: " + tempCard.toString());
                 }
-                //ayo
 
                 //CHECK IF THEY OUT OF CARDS
                 if(this.game.getPlayerFor(session).getHand().getCards().size() == 0) {
@@ -205,18 +202,23 @@ public class BlackJackSocketHandler extends TextWebSocketHandler {
                     this.game.resetRound();
 
                     long lowestScore = 0;
-                    WebSocketSession playerSesh = null;
+                    String playerSesh = "";
+
+                    boolean isGameOver = false;
 
 
                     //PRINT SCORES
                     for (final Player player : this.game.getConnectedPlayers()) {
 
                         //PRINT PLAYER SCORE
-                        if(player.isReal()) {
+                        if (player.isReal()) {
                             this.broadCastMessageFromServer(message(Message.SCORE, player.getSession(), player.getScore()).build());
-                            if(lowestScore > player.getScore()) {
+                            if (lowestScore > player.getScore()) {
                                 lowestScore = player.getScore();
-                                playerSesh = player.getSession();
+
+                            }
+                            if (player.getScore() >= 100) {
+                                isGameOver = true;
                             }
                         }
                     }
@@ -225,9 +227,12 @@ public class BlackJackSocketHandler extends TextWebSocketHandler {
                     for (final Player player : this.game.getConnectedPlayers()) {
 
                         //GAME OVER & PRINT WINNER
-                        if(player.isReal()) {
-                            if(player.getScore() >= 100) {
-                                this.broadCastMessageFromServer(message(Message.SCORE, "Winner is: " + playerSesh, lowestScore).build());
+                        if (player.isReal()) {
+                            if (isGameOver) {
+                                if(player.getScore() == lowestScore) {
+
+                                    this.broadCastMessageFromServer(message(Message.SCORE, player.getSession() + " is winner and ", lowestScore).build());
+                                }
                             }
                         }
                     }

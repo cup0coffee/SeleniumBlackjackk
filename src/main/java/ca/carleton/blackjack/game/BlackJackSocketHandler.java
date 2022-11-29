@@ -193,7 +193,6 @@ public class BlackJackSocketHandler extends TextWebSocketHandler {
                     cardPile.add(tempCard);
                     LOG.info("(TOP PILE) -> most recent card used: " + tempCard.toString());
                 }
-                //ayo
 
                 //CHECK IF THEY OUT OF CARDS
                 if(this.game.getPlayerFor(session).getHand().getCards().size() == 0) {
@@ -203,7 +202,9 @@ public class BlackJackSocketHandler extends TextWebSocketHandler {
                     this.game.resetRound();
 
                     long lowestScore = 0;
-                    WebSocketSession playerSesh = null;
+                    String playerSesh = "";
+
+                    boolean isGameOver = false;
 
 
                     //PRINT SCORES
@@ -214,7 +215,10 @@ public class BlackJackSocketHandler extends TextWebSocketHandler {
                             this.broadCastMessageFromServer(message(Message.SCORE, player.getSession(), player.getScore()).build());
                             if (lowestScore > player.getScore()) {
                                 lowestScore = player.getScore();
-                                playerSesh = player.getSession();
+
+                            }
+                            if (player.getScore() >= 100) {
+                                isGameOver = true;
                             }
                         }
                     }
@@ -224,8 +228,11 @@ public class BlackJackSocketHandler extends TextWebSocketHandler {
 
                         //GAME OVER & PRINT WINNER
                         if (player.isReal()) {
-                            if (player.getScore() >= 100) {
-                                this.broadCastMessageFromServer(message(Message.SCORE, "Winner is: " + playerSesh, lowestScore).build());
+                            if (isGameOver) {
+                                if (player.getScore() == lowestScore) {
+
+                                    this.broadCastMessageFromServer(message(Message.SCORE, player.getSession() + " is winner and ", lowestScore).build());
+                                }
                             }
                         }
                     }
