@@ -1,0 +1,14 @@
+cucumber\feature\WinConditionStepDefs.class
+selenium\MultiPlayerTest.class
+config\WebDriverFactory.class
+cucumber\feature\CucumberTests.class
+selenium\AbstractSeleniumTest.class
+selenium\GamePlayTest.class
+config\MockUserFactory.class
+config\SeleniumTest.class
+selenium\page\IndexPage.class
+selenium\page\AbstractPage.class
+cucumber\feature\DealerStepDefs.class
+config\SeleniumTestExecutionListener.class
+cucumber\feature\AIStepDefs.class
+selenium\ConnectionBasicsTest.class
