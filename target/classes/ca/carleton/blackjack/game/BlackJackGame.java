@@ -82,6 +82,7 @@ public class BlackJackGame {
      * Reset for another round.
      */
     public void resetRound() {
+
         for (final Player player : this.getConnectedPlayers()) {
             //CALC AND ADD SCORE BEFORE CLEARING
             player.incrementScore(player.getHand().getHandValue());

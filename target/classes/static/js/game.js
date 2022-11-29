@@ -117,6 +117,9 @@ function dispatch(message) {
         case 'BUST':
             log(logMessage);
             break;
+        case 'SCORE':
+            log(logMessage);
+            break;
         case 'PLAY':
             log(logMessage);
             break;

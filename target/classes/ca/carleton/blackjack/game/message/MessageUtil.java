@@ -21,6 +21,8 @@ public class MessageUtil {
 
         PLAY("|PLAY|%s"),
         DRAW("|DRAW|%s"),
+
+        SCORE("|SCORE|Player %s has score of %s"),
         DEALING_CARDS("|DEALING+CARDS|Updated cards."),
         ADD_PLAYER_CARD("|ADD+PLAYER+CARD|%s"),
         ADD_DEALER_CARD("|ADD+DEALER+CARD|%s"),

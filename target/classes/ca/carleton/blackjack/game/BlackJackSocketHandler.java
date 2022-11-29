@@ -193,7 +193,7 @@ public class BlackJackSocketHandler extends TextWebSocketHandler {
                     this.updateCards();
                     //ADD CARD TO CARD PILE
                     cardPile.add(tempCard);
-                    LOG.info("card used: " + tempCard.toString());
+                    LOG.info("(TOP PILE) -> most recent card used: " + tempCard.toString());
                 }
                 //ayo
 
@@ -203,6 +203,34 @@ public class BlackJackSocketHandler extends TextWebSocketHandler {
                     this.broadCastMessageFromServer(message(Message.RESET).build());
 
                     this.game.resetRound();
+
+                    long lowestScore = 0;
+                    WebSocketSession playerSesh = null;
+
+
+                    //PRINT SCORES
+                    for (final Player player : this.game.getConnectedPlayers()) {
+
+                        //PRINT PLAYER SCORE
+                        if(player.isReal()) {
+                            this.broadCastMessageFromServer(message(Message.SCORE, player.getSession(), player.getScore()).build());
+                            if(lowestScore > player.getScore()) {
+                                lowestScore = player.getScore();
+                                playerSesh = player.getSession();
+                            }
+                        }
+                    }
+
+                    //CHECK IF WINNER
+                    for (final Player player : this.game.getConnectedPlayers()) {
+
+                        //GAME OVER & PRINT WINNER
+                        if(player.isReal()) {
+                            if(player.getScore() >= 100) {
+                                this.broadCastMessageFromServer(message(Message.SCORE, "Winner is: " + playerSesh, lowestScore).build());
+                            }
+                        }
+                    }
                 }
 
                 break;
@@ -219,7 +247,7 @@ public class BlackJackSocketHandler extends TextWebSocketHandler {
                 this.broadCastMessageFromServer(message(Message.DRAW, "drawn card: " + drawn.toString()).build());
 
                 //ADD INITIAL CARD TO CARD PILE
-                cardPile.add(drawn);
+                //cardPile.add(drawn);
                 this.updateCards();
 
                 LOG.info("card used: " + drawn.toString());
